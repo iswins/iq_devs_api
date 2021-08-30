@@ -1,4 +1,4 @@
-### Устанновка
+### Установка
 
 - создать .env файл из .env.example
 - выполнить ```cd docker && docker-compose up -d```
