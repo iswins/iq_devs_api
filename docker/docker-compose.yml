@@ -1,0 +1,42 @@
+version: '3.8'
+services:
+
+    #PHP Service
+    iq_devs_api_fpm:
+        build:
+            context: ./php
+            dockerfile: ./Dockerfile
+        image: iq_devs_api_fpm
+        container_name: iq_devs_api_fpm
+        restart: unless-stopped
+        tty: true
+        env_file:
+            - ../.env
+        working_dir: /var/www
+        volumes:
+            - ../:/var/www
+        networks:
+            - iq_devs_api-network
+
+    #Nginx Service
+    iq_devs_api:
+        build:
+            context: ./nginx
+            dockerfile: ./Dockerfile
+        container_name: iq_devs_api
+        image: iq_devs_api
+        restart: unless-stopped
+        tty: true
+        ports:
+            - "7090:80"
+        volumes:
+            - ./nginx/conf.d/:/etc/nginx/conf.d/
+            - ../:/var/www
+        networks:
+            - iq_devs_api-network
+
+
+#Docker Networks
+networks:
+    iq_devs_api-network:
+        driver: bridge
